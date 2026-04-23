@@ -160,14 +160,14 @@ function Paper({ paper, ink, ruled, stickers, font, photo, onPhotoClick, onRemov
             zIndex:3, position:'relative', transition:'border-color .2s',
             border: photo ? 'none' : `1.5px dashed ${dark ? 'rgba(255,255,255,.14)' : 'rgba(44,32,24,.14)'}`,
             display:'flex', alignItems:'center', justifyContent:'center',
-            minHeight: photo ? 0 : 56, cursor: photo ? 'default' : 'pointer',
+            minHeight: photo ? 0 : 100, cursor: photo ? 'default' : 'pointer',
           }}
           onMouseEnter={e => { if (!photo) e.currentTarget.style.borderColor = '#c97b6e' }}
           onMouseLeave={e => { if (!photo) e.currentTarget.style.borderColor = dark ? 'rgba(255,255,255,.14)' : 'rgba(44,32,24,.14)' }}
         >
           {photo ? (
             <div style={{ position:'relative', width:'100%' }}>
-              <img src={photo} alt="" style={{ width:'100%', maxHeight:180, objectFit:'cover', display:'block' }}/>
+              <img src={photo} alt="" style={{ width:'100%', maxHeight:400, objectFit:'cover', display:'block' }}/>
               <button
                 onClick={e => { e.stopPropagation(); onRemovePhoto() }}
                 style={{ position:'absolute', top:6, right:6, width:22, height:22, borderRadius:'50%',
@@ -188,7 +188,7 @@ function Paper({ paper, ink, ruled, stickers, font, photo, onPhotoClick, onRemov
       {/* photo (read view) */}
       {readOnly && photo && (
         <img src={photo} alt="" style={{
-          width:'100%', maxHeight:200, objectFit:'cover', borderRadius:2,
+          width:'100%', maxHeight:400, objectFit:'cover', borderRadius:2,
           marginBottom:'1.2rem', display:'block', position:'relative', zIndex:3,
         }}/>
       )}
