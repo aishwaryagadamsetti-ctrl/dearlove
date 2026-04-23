@@ -151,50 +151,54 @@ function Paper({ paper, ink, ruled, stickers, font, photo, onPhotoClick, onRemov
         }}>{s}</span>
       ))}
 
-      {/* photo slot (composer only) */}
-      {!readOnly && (
-        <div
-          onClick={photo ? undefined : onPhotoClick}
-          style={{
-            width:'100%', marginBottom:'1.1rem', borderRadius:2, overflow:'hidden',
-            zIndex:3, position:'relative', transition:'border-color .2s',
-            border: photo ? 'none' : `1.5px dashed ${dark ? 'rgba(255,255,255,.14)' : 'rgba(44,32,24,.14)'}`,
-            display:'flex', alignItems:'center', justifyContent:'center',
-            minHeight: photo ? 0 : 100, cursor: photo ? 'default' : 'pointer',
-          }}
-          onMouseEnter={e => { if (!photo) e.currentTarget.style.borderColor = '#c97b6e' }}
-          onMouseLeave={e => { if (!photo) e.currentTarget.style.borderColor = dark ? 'rgba(255,255,255,.14)' : 'rgba(44,32,24,.14)' }}
-        >
-          {photo ? (
-            <div style={{ position:'relative', width:'100%' }}>
-              <img src={photo} alt="" style={{ width:'100%', maxHeight:400, objectFit:'cover', display:'block' }}/>
-              <button
-                onClick={e => { e.stopPropagation(); onRemovePhoto() }}
-                style={{ position:'absolute', top:6, right:6, width:22, height:22, borderRadius:'50%',
-                  background:'rgba(0,0,0,.55)', color:'#fff', border:'none', cursor:'pointer',
-                  fontSize:'.75rem', display:'flex', alignItems:'center', justifyContent:'center' }}
-              >×</button>
+      {/* layout: photo right, content left */}
+      <div style={{ display:'flex', gap:'1.5rem', position:'relative', zIndex:2, alignItems:'flex-start' }}>
+
+        {/* text content */}
+        <div style={{ flex:1, color:tc, fontFamily:font, minWidth:0 }}>
+          {children}
+        </div>
+
+        {/* photo column */}
+        <div style={{ width:200, flexShrink:0 }}>
+          {!readOnly && (
+            <div
+              onClick={photo ? undefined : onPhotoClick}
+              style={{
+                width:'100%', borderRadius:2, overflow:'hidden',
+                zIndex:3, position:'relative', transition:'border-color .2s',
+                border: photo ? 'none' : `1.5px dashed ${dark ? 'rgba(255,255,255,.14)' : 'rgba(44,32,24,.14)'}`,
+                display:'flex', alignItems:'center', justifyContent:'center',
+                minHeight: photo ? 0 : 320, cursor: photo ? 'default' : 'pointer',
+              }}
+              onMouseEnter={e => { if (!photo) e.currentTarget.style.borderColor = '#c97b6e' }}
+              onMouseLeave={e => { if (!photo) e.currentTarget.style.borderColor = dark ? 'rgba(255,255,255,.14)' : 'rgba(44,32,24,.14)' }}
+            >
+              {photo ? (
+                <div style={{ position:'relative', width:'100%' }}>
+                  <img src={photo} alt="" style={{ width:'100%', height:380, objectFit:'cover', display:'block', borderRadius:2 }}/>
+                  <button
+                    onClick={e => { e.stopPropagation(); onRemovePhoto() }}
+                    style={{ position:'absolute', top:6, right:6, width:22, height:22, borderRadius:'50%',
+                      background:'rgba(0,0,0,.55)', color:'#fff', border:'none', cursor:'pointer',
+                      fontSize:'.75rem', display:'flex', alignItems:'center', justifyContent:'center' }}
+                  >×</button>
+                </div>
+              ) : (
+                <span style={{ fontFamily:"'Courier New',monospace", fontSize:'.58rem', letterSpacing:'.15em',
+                  color: dark ? 'rgba(255,255,255,.28)' : 'rgba(44,32,24,.28)',
+                  display:'flex', flexDirection:'column', alignItems:'center', gap:3, textAlign:'center', padding:'1rem' }}>
+                  <span style={{ fontSize:'1.2rem' }}>✦</span>ADD A PHOTO
+                </span>
+              )}
             </div>
-          ) : (
-            <span style={{ fontFamily:"'Courier New',monospace", fontSize:'.58rem', letterSpacing:'.15em',
-              color: dark ? 'rgba(255,255,255,.28)' : 'rgba(44,32,24,.28)',
-              display:'flex', flexDirection:'column', alignItems:'center', gap:3 }}>
-              <span style={{ fontSize:'1.2rem' }}>✦</span>ADD A PHOTO
-            </span>
+          )}
+          {readOnly && photo && (
+            <img src={photo} alt="" style={{
+              width:'100%', height:380, objectFit:'cover', borderRadius:2, display:'block',
+            }}/>
           )}
         </div>
-      )}
-
-      {/* photo (read view) */}
-      {readOnly && photo && (
-        <img src={photo} alt="" style={{
-          width:'100%', maxHeight:400, objectFit:'cover', borderRadius:2,
-          marginBottom:'1.2rem', display:'block', position:'relative', zIndex:3,
-        }}/>
-      )}
-
-      <div style={{ position:'relative', zIndex:2, color:tc, fontFamily:font }}>
-        {children}
       </div>
     </div>
   )
